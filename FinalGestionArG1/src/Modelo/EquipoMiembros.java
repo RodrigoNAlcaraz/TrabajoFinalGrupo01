@@ -36,6 +36,10 @@ public class EquipoMiembros {
         this.estado = estado;
     }
 
+    public EquipoMiembros(Miembro a) {
+       this.miembro = a;
+    }
+
     public int getIdMiembroEq() {
         return idMiembroEq;
     }

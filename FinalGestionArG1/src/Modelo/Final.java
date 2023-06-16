@@ -11,7 +11,7 @@ import Controlador.EquipoData;
 import java.time.LocalDate;
 import Controlador.MiembroData;
 import Controlador.ProyectoData;
-import Controlador.EquipomiembrosData;
+import Controlador.EquipoMiembrosData;
 import Controlador.TareaData;
 import Modelo.Comentarios;
 
@@ -23,9 +23,14 @@ public class Final {
         MiembroData md = new MiembroData(con);
         ProyectoData pd = new ProyectoData(con);
         EquipoData ed = new EquipoData(con);
-        EquipomiembrosData em = new EquipomiembrosData(con);
+        EquipoMiembrosData em = new EquipoMiembrosData(con);
         TareaData td = new TareaData(con);
         ComentariosData cd = new ComentariosData(con);
+
+        
+        
+        System.out.println(ed.buscarEquipoPorNombre("grupo 1"));
+        
 //        equipoData ed = new equipoData(con);
 //miembro miembrotest = new miembro(153251, "alverti", "juan carlos", true);
 //md.guardarmiembro(miembrotest); Test Guardar Miembro
@@ -34,7 +39,6 @@ public class Final {
 //md.modificarMiembro(7, d); Test modificarmiembro
 //md.listarAlumnos(); TEST LISTAR ALUMNOS
 //md.activarMiembro(8); test activar miembro
-
         Proyecto d = new Proyecto(3, "Materia2", "materia dificil2", LocalDate.of(2023, 6, 12), true);
         Proyecto h = new Proyecto(5, "Materia rara", "dificilisima", LocalDate.of(2023, 6, 12), true);
         Proyecto z = new Proyecto(7, "proshecto zeta", "zeta", LocalDate.of(2023, 6, 12), true);
@@ -66,8 +70,9 @@ public class Final {
         //em.eliminarEquipoMiembro(23); 
         //em.modificarEquipoMiembro(37, x);
         //em.activarEquipoMiembro(23);
+//        em.listarEquipoMiembrosPorID(10);
         Tarea t = new Tarea(4, "limpiar", LocalDate.of(2020, 2, 2), LocalDate.of(2023, 6, 11), true, x);
-
+        //td.listarTareasPorId(23);
         //td.guardarTarea(t);
         //td.eliminarTarea(4);
         //td.activarTarea(4);
@@ -76,8 +81,8 @@ public class Final {
         //cd.guardarComentario(c);
         //cd.eliminaComentario(5);
         //cd.activarComentario(5);
-        cd.modificarComentario(5, c);
-
+        //cd.modificarComentario(5, c);
+//        cd.listarComentariosPorIdTarea(4);
     }
 
 }

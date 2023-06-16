@@ -102,4 +102,33 @@ public class ComentariosData {
         }
         return c;
     }
+        public List<Comentarios> listarComentariosPorIdTarea(int id) {
+        List<Comentarios> comentariosLista = new ArrayList<>();
+        try {
+            String sql = "SELECT idComentario, comentario,fechaAvance,estado\n"
+                    + "FROM comentarios\n"
+                    + "WHERE idTarea = ?";
+
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            ArrayList<Comentarios> listaRecibida = new ArrayList<Comentarios>();
+            while (rs.next()) {
+                Comentarios a = new Comentarios();
+                a.setIdComentario(rs.getInt("idComentario"));
+                a.setComentario(rs.getString("comentario"));
+                a.setFechaAvance(rs.getDate("fechaAvance").toLocalDate());
+                a.setEstado(rs.getBoolean("estado"));
+                listaRecibida.add(a);
+               
+            }
+            for (Comentarios comentarios : listaRecibida) {
+                System.out.println(comentarios);
+            }
+            ps.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, " Error en la busqueda." + ex.getMessage());
+        }
+        return comentariosLista;
+    }
 }

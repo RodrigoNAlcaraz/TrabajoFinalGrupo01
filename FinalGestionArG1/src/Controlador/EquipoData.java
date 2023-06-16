@@ -15,6 +15,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -72,7 +73,8 @@ public class EquipoData {
             JOptionPane.showMessageDialog(null, " No se pudo eliminar el equipo de la bd." + e.getMessage());
         }
     }
-        public void activarEquipo(int id) {
+
+    public void activarEquipo(int id) {
 
         try {
             String sql = "UPDATE equipo SET estado = 1 WHERE idEquipo = ? ";
@@ -136,14 +138,13 @@ public class EquipoData {
 
             ps.close();
 
-            
-
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, " Error en la busqueda." + ex.getMessage());
         }
         return equipos;
     }
-        public List<Equipo> listarEquiposInactivos() {
+
+    public List<Equipo> listarEquiposInactivos() {
 
         List<Equipo> equipos = new ArrayList<>();
         try {
@@ -169,8 +170,6 @@ public class EquipoData {
 
             ps.close();
 
-            
-
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, " Error en la busqueda." + ex.getMessage());
         }
@@ -188,16 +187,54 @@ public class EquipoData {
         return null;
 
     }
-        public Equipo buscarEquipoPorIdEquipo(int id) {
-        List<Equipo> listaEquipos = listarEquipo();
-        for (Equipo listaEquipo : listaEquipos) {
-            if (listaEquipo.getIdEquipo()== id) {
-                return listaEquipo;
+
+    /*public Equipo buscarEquipoPorIdEquipo(int id) {
+        try {
+            List<Equipo> listaEquipos = listarEquipo();
+            for (Equipo listaEquipo : listaEquipos) {
+                if (listaEquipo.getIdEquipo() == id) {
+                    Equipo eq = new Equipo(listaEquipo.getProyecto(), listaEquipo.getIdEquipo(), listaEquipo.getNombre(), listaEquipo.getFechaCreacion(), true);
+                    return eq;
+                }
+
             }
-          
+        } catch (Exception ex) {
+            // Manejo de la excepción
+            JOptionPane.showMessageDialog(null, " Error en la busqueda." + ex.getMessage());
         }
         return null;
 
+    }*/
+    public Equipo buscarEquipoPorIdEquipo(int id) {
+        try {
+            List<Equipo> listaEquipos = listarEquipo();
+            for (Equipo equipo : listaEquipos) {
+                if (equipo.getIdEquipo() == id) {
+                    return equipo;
+                }
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error en la búsqueda: " + ex.getMessage());
+        }
+        return null;
+    }
+
+    public Equipo buscarEquipoPorNombre(String n) {
+        try {
+            List<Equipo> listaEquipos = listarEquipo();
+
+            for (Equipo listaEquipo : listaEquipos) {
+                if (listaEquipo.getNombre().equalsIgnoreCase(n)) {
+                    Equipo eq = new Equipo(listaEquipo.getProyecto(), listaEquipo.getIdEquipo(), listaEquipo.getNombre(), listaEquipo.getFechaCreacion(), true);
+                    return eq;
+                }
+            }
+        } catch (Exception ex) {
+            // Manejo de la excepción
+            JOptionPane.showMessageDialog(null, " Error en la busqueda." + ex.getMessage());
+        }
+
+        return null;
     }
 
     public Miembro buscarMiembro(int id) {

@@ -75,7 +75,7 @@ public class Comentarios {
 
     @Override
     public String toString() {
-        return "Comentarios{" + "idComentario=" + idComentario + ", comentario=" + comentario + ", fechaAvance=" + fechaAvance + ", tarea=" + tarea + ", estado=" + estado + '}';
+        return "Comentarios{" + "idComentario=" + idComentario + ", comentario=" + comentario + ", fechaAvance=" + fechaAvance+ ", estado=" + estado + '}';
     }
 
    

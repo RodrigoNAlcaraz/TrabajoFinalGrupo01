@@ -5,8 +5,6 @@
  */
 package Controlador;
 
-import Controlador.ProyectoData;
-import Modelo.Miembro;
 import Modelo.Proyecto;
 import java.sql.Connection;
 import java.sql.Date;
@@ -82,6 +80,40 @@ public class ProyectoData {
         return p;
     }
 
+    public Proyecto buscarProyectoPorNombre(String nombre) {
+        Proyecto p = new Proyecto();
+
+        if (nombre == null) {
+            JOptionPane.showMessageDialog(null, "El nombre del proyecto no puede ser nulo.");
+            return p;
+        }
+
+        String sql = "SELECT * FROM proyecto WHERE nombre=? AND estado = 1";
+
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, nombre);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                p.setIdProyecto(rs.getInt("idProyecto"));
+                p.setNombre(rs.getString("nombre"));
+                p.setDescripcion(rs.getString("descripcion"));
+                p.setFechaInicio(rs.getDate("fechaInicio").toLocalDate());
+                p.setEstado(rs.getBoolean("estado"));
+            } else {
+                 JOptionPane.showMessageDialog(null, "No se encontró ningún proyecto con ese nombre.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+            rs.close();
+            ps.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "No se pudo buscar el proyecto por problemas de conexión: " + ex.getMessage());
+        }
+
+        return p;
+    }
+
     public void eliminarProyecto(int id) {
 
         try {
@@ -138,9 +170,9 @@ public class ProyectoData {
                 proyectos.add(p);
 
             }
-            for (Proyecto p1 : proyectos) {
-                System.out.println(p1);
-            }
+//            for (Proyecto p1 : proyectos) {
+//                System.out.println(p1);
+//            }
             ps.close();
             // JOptionPane.showMessageDialog(null, "Lista devuelta con exito.");
 
@@ -149,7 +181,8 @@ public class ProyectoData {
         }
         return proyectos;
     }
-        public List<Proyecto> listarProyectosInactivos() {
+
+    public List<Proyecto> listarProyectosInactivos() {
 
         List<Proyecto> proyectos = new ArrayList<>();
         try {
@@ -192,6 +225,10 @@ public class ProyectoData {
 
             JOptionPane.showMessageDialog(null, " No se pudo activar el Proyecto." + e.getMessage());
         }
+    }
+
+    public void setVisible(boolean b) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

@@ -6,6 +6,7 @@
 package Controlador;
 
 import Modelo.Equipo;
+import Modelo.EquipoMiembros;
 import Modelo.Tarea;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import Modelo.Miembro;
-import java.time.LocalDate;
 
 /**
  *
@@ -80,6 +80,37 @@ public class TareaData {
         }
     }
 
+    public List<Tarea> listarTareasPorIdMiembroEQ(int id) {
+        List<Tarea> tareaLista = new ArrayList<>();
+        try {
+            String sql = "SELECT idTarea, nombre, fechaCreacion, fechaCierre, Estado\n"
+                    + "FROM tarea\n"
+                    + "WHERE idMiembroEq = ?";
+
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            ArrayList<Tarea> listaRecibida = new ArrayList<Tarea>();
+            while (rs.next()) {
+                Tarea a = new Tarea();
+                a.setIdTarea(rs.getInt("idTarea"));
+                a.setNombre(rs.getString("nombre"));
+                a.setFechaCreacion(rs.getDate("fechaCreacion").toLocalDate());
+                a.setFechaCierre(rs.getDate("fechaCierre").toLocalDate());
+                a.setEstado(rs.getBoolean("estado"));
+                listaRecibida.add(a);
+               
+            }
+            for (Tarea x : listaRecibida) {
+                System.out.println(x);
+            }
+            ps.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, " Error en la busqueda." + ex.getMessage());
+        }
+        return tareaLista;
+    }
+
     public void activarTarea(int id) {
 
         try {
@@ -94,6 +125,7 @@ public class TareaData {
             JOptionPane.showMessageDialog(null, " No se pudo activo la tarea." + e.getMessage());
         }
     }
+
     public Tarea modificarTarea(int id, Tarea p) {
 
         String sql = "UPDATE tarea SET nombre = ?, fechaCreacion = ?,fechaCierre = ?,estado = ?,idMiembroEq = ? WHERE  idTarea = ? AND estado = 1";

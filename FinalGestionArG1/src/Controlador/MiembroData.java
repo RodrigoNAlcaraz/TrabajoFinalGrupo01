@@ -115,7 +115,7 @@ public class MiembroData {
         return m;
     }
 
-    public List<Miembro> listarAlumnos() {
+    public List<Miembro> listarMiembro() {
 
         List<Miembro> miembros = new ArrayList<>();
         try {
@@ -132,9 +132,9 @@ public class MiembroData {
                 miembros.add(m);
 
             }
-            for (Miembro miembro1 : miembros) {
-                System.out.println(miembro1);
-            }
+//            for (Miembro miembro1 : miembros) {
+//                System.out.println(miembro1);
+//            }
             ps.close();
             // JOptionPane.showMessageDialog(null, "Lista devuelta con exito.");
 
@@ -144,9 +144,9 @@ public class MiembroData {
         return miembros;
     }
 
-    public List<Miembro> listarAlumnosInactivos() {
+    public List<Miembro> listarMiembrosInactivos() {
 
-        List<Miembro> miembros = new ArrayList<>();
+        List<Miembro> miembrosInactivos = new ArrayList<>();
         try {
             String sql = "SELECT * FROM miembro WHERE estado = 0 ";
             PreparedStatement ps = con.prepareStatement(sql);
@@ -158,19 +158,16 @@ public class MiembroData {
                 m.setApellido(rs.getString(3));
                 m.setNombre(rs.getString(4));
                 m.setEstado(rs.getBoolean(5));
-                miembros.add(m);
+                miembrosInactivos.add(m);
+            }
 
-            }
-            for (Miembro miembro1 : miembros) {
-                System.out.println(miembro1);
-            }
             ps.close();
             // JOptionPane.showMessageDialog(null, "Lista devuelta con exito.");
 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, " Error en la busqueda." + ex.getMessage());
         }
-        return miembros;
+        return miembrosInactivos;
     }
 
     public void activarMiembro(int id) {
