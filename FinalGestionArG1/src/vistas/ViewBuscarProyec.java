@@ -248,14 +248,21 @@ public class ViewBuscarProyec extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Por favor, ingrese el nombre del proyecto.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
-        List<Equipo> listaEqu = equiData.listarEquipo();
+        
+         ArrayList<Equipo> listaEqu = (ArrayList<Equipo>) equiData.listarEquipo();
         Proyecto proyecto = pd.buscarProyectoPorNombre(nombreProyecto);
-
+        
+         if (proyecto == null) {
+            JOptionPane.showMessageDialog(this, "No se encontró el proyecto.", "Error", JOptionPane.ERROR_MESSAGE);
+            limpiar();
+            return;
+        }System.out.println(proyecto);
+        
         if (proyecto.getIdProyecto() != 0) {
             txtIdProyecto.setText(String.valueOf(proyecto.getIdProyecto()));
             txtDescripcion.setText(proyecto.getDescripcion());
             dateFechaInicio.setDate(java.sql.Date.valueOf(proyecto.getFechaInicio()));
+            
             for (Equipo equipo : listaEqu) {
                 int idPro = Integer.parseInt(txtIdProyecto.getText());
                 int id = equipo.getProyecto().getIdProyecto();
@@ -273,7 +280,6 @@ public class ViewBuscarProyec extends javax.swing.JFrame {
         } else {
             limpiar();
         }
-
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void radBtnEstadoProyectoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radBtnEstadoProyectoActionPerformed

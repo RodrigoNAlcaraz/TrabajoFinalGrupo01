@@ -31,13 +31,13 @@ public class ComentariosData {
     }
 
     public void guardarComentario(Comentarios coment) {
-        String sql = "INSERT INTO comentarios (comentario, fechaAvance, idTarea,estado) VALUES (?, ?, ?,?)";
+        String sql = "INSERT INTO comentarios (comentario, fechaAvance, idTarea) VALUES (?, ?, ?)";
         try {
             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, coment.getComentario());
             ps.setDate(2, Date.valueOf(coment.getFechaAvance()));
             ps.setInt(3, coment.getTarea().getIdTarea());
-            ps.setInt(4, coment.isEstado()? 1 : 0);
+           
             ps.executeUpdate();
             ResultSet rs = ps.getGeneratedKeys();
             if (rs.next()) {

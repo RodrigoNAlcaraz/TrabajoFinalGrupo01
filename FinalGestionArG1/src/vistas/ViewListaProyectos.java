@@ -5,6 +5,7 @@
  */
 package vistas;
 
+import Controlador.EquipoData;
 import Controlador.ProyectoData;
 import Modelo.Proyecto;
 import java.time.LocalDate;
@@ -20,6 +21,7 @@ import javax.swing.table.DefaultTableModel;
 public class ViewListaProyectos extends javax.swing.JFrame {
 
     private ProyectoData pd;
+    private EquipoData equiData;
     private DefaultTableModel modelo;
 
     /**
@@ -34,9 +36,10 @@ public class ViewListaProyectos extends javax.swing.JFrame {
 
     }
 
-    ViewListaProyectos(ProyectoData proyectoData) {
+    public ViewListaProyectos(ProyectoData pd, EquipoData equiData) {
         initComponents();
-        this.pd = proyectoData;
+        this.pd = pd;
+        this.equiData = equiData;
         modelo = new DefaultTableModel();
         armarCabeceraTabla();
         limpiarTabla();
@@ -160,7 +163,7 @@ public class ViewListaProyectos extends javax.swing.JFrame {
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         // TODO add your handling code here:
-        ViewPpalProyec ppalProy = new ViewPpalProyec(pd);
+        ViewPpalProyec ppalProy = new ViewPpalProyec(pd, equiData);
         ppalProy.setVisible(true);
         ppalProy.setLocationRelativeTo(null);
         this.dispose();
@@ -169,14 +172,10 @@ public class ViewListaProyectos extends javax.swing.JFrame {
     private void btnModificarPersonalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarPersonalActionPerformed
         // TODO add your handling code here:
 
-        //para realizar modificaciones dentro de la vista, es diferente a la que implementamos en miembros, las 2 cumplen su proposito 
+
         int opcion = JOptionPane.showConfirmDialog(this, "¿Desea realizar alguna modificacion?", "Confirmación", JOptionPane.YES_NO_OPTION);
         if (opcion == JOptionPane.YES_OPTION) {
             //si confirma que si, empezar con el codigo aca abajo
-//            ViewBuscarProyec buscarProy = new ViewBuscarProyec();
-//            buscarProy.setVisible(true);
-//            buscarProy.setLocationRelativeTo(null);
-//            this.dispose();
 
             int filaSeleccionada = tablaListadoProyecto.getSelectedRow();
             if (filaSeleccionada == -1) {

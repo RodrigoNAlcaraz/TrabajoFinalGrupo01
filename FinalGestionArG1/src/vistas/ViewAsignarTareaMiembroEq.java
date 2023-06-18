@@ -5,6 +5,19 @@
  */
 package vistas;
 
+import Controlador.ComentariosData;
+import Controlador.EquipoData;
+import Controlador.EquipoMiembrosData;
+import Controlador.MiembroData;
+import Controlador.ProyectoData;
+import Controlador.TareaData;
+import Modelo.EquipoMiembros;
+import Modelo.Miembro;
+import Modelo.Tarea;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
@@ -13,11 +26,34 @@ import javax.swing.JOptionPane;
  */
 public class ViewAsignarTareaMiembroEq extends javax.swing.JFrame {
 
+    private ProyectoData proyecData;
+    private EquipoData equiData;
+    private EquipoMiembrosData equiMiemData;
+    private MiembroData miemData;
+    private TareaData tareaData;
+    private ComentariosData comData;
+    private ViewBuscarEquipo busEq;
+    private int idEquipo;
+
     /**
      * Creates new form ViewAsignarTareaMiembroEq
      */
     public ViewAsignarTareaMiembroEq() {
         initComponents();
+    }
+
+    ViewAsignarTareaMiembroEq(ProyectoData proyecData, EquipoData equiData, EquipoMiembrosData equiMiemData, MiembroData miemData, TareaData tareaData, ComentariosData comData, int idLlevar) {
+        initComponents();
+        this.proyecData = proyecData;
+        this.equiData = equiData;
+        this.equiMiemData = equiMiemData;
+        this.miemData = miemData;
+        this.tareaData = tareaData;
+        this.comData = comData;
+        this.idEquipo = idLlevar;
+        limpiar();
+        cargaMiembroCBox();
+
     }
 
     /**
@@ -42,13 +78,16 @@ public class ViewAsignarTareaMiembroEq extends javax.swing.JFrame {
         cBoxMiembro = new javax.swing.JComboBox<>();
         lblFechaCierre = new javax.swing.JLabel();
         dateFechaCierre = new com.toedter.calendar.JDateChooser();
-        lblEstado = new javax.swing.JLabel();
-        radBtnEstado = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         btnLimpiar.setFont(new java.awt.Font("Tahoma", 2, 18)); // NOI18N
         btnLimpiar.setText("Limpiar");
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
 
         lblTituloAsignarTareas.setFont(new java.awt.Font("Sylfaen", 3, 36)); // NOI18N
         lblTituloAsignarTareas.setText("Asignar Tareas al Equipo");
@@ -78,17 +117,14 @@ public class ViewAsignarTareaMiembroEq extends javax.swing.JFrame {
         lblMiembro.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
         lblMiembro.setText("Miembro:");
 
-        lblFechaCierre.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
-        lblFechaCierre.setText("Fecha de Cierre:");
-
-        lblEstado.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
-        lblEstado.setText("Estado:");
-
-        radBtnEstado.addActionListener(new java.awt.event.ActionListener() {
+        cBoxMiembro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                radBtnEstadoActionPerformed(evt);
+                cBoxMiembroActionPerformed(evt);
             }
         });
+
+        lblFechaCierre.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
+        lblFechaCierre.setText("Fecha de Cierre:");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -110,27 +146,20 @@ public class ViewAsignarTareaMiembroEq extends javax.swing.JFrame {
                                     .addComponent(cBoxMiembro, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(dateFechaCreacion, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)))
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(lblEstado, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblFechaCierre))
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addGap(49, 49, 49)
-                                        .addComponent(radBtnEstado))
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addGap(46, 46, 46)
-                                        .addComponent(dateFechaCierre, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                .addComponent(lblFechaCierre)
+                                .addGap(46, 46, 46)
+                                .addComponent(dateFechaCierre, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(71, 71, 71)
                         .addComponent(btnAsignar, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(65, 65, 65)
+                        .addGap(53, 53, 53)
                         .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(57, 57, 57)
+                        .addGap(51, 51, 51)
                         .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(48, 48, 48)
                         .addComponent(lblTituloAsignarTareas, javax.swing.GroupLayout.PREFERRED_SIZE, 437, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(64, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -153,11 +182,7 @@ public class ViewAsignarTareaMiembroEq extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(dateFechaCierre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblFechaCierre))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(radBtnEstado)
-                    .addComponent(lblEstado))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 99, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAsignar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -169,7 +194,9 @@ public class ViewAsignarTareaMiembroEq extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -182,9 +209,9 @@ public class ViewAsignarTareaMiembroEq extends javax.swing.JFrame {
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
 
         // TODO add your handling code here:
-        ViewBuscarEquipo ppalBusEquipo = new ViewBuscarEquipo();
-        ppalBusEquipo.setVisible(true);
-        ppalBusEquipo.setLocationRelativeTo(null);
+        ViewBuscarEquipo busEq = new ViewBuscarEquipo(proyecData, equiData, equiMiemData, miemData, tareaData, comData);
+        busEq.setVisible(true);
+        busEq.setLocationRelativeTo(null);
         this.dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
 
@@ -192,33 +219,106 @@ public class ViewAsignarTareaMiembroEq extends javax.swing.JFrame {
         // TODO add your handling code here:
         int opcion = JOptionPane.showConfirmDialog(this, "¿Desea Asignar esta Tarea?", "Confirmación", JOptionPane.YES_NO_OPTION);
         if (opcion == JOptionPane.YES_OPTION) {
-            //si confirma que si, empezar con el codigo aca abajo
 
+            try {
+                if (txtNombreTarea.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "El campo nombre de la tarea no puede estar vacío.");
+                    txtNombreTarea.requestFocus();
+                    return;
+                }
+
+                Date sfecha = dateFechaCreacion.getDate();
+                if (sfecha == null) {
+                    JOptionPane.showMessageDialog(this, "La fecha de creación no puede estar vacía.");
+                    return;
+                }
+
+                Date sfecha2 = dateFechaCierre.getDate();
+                if (sfecha2 == null) {
+                    JOptionPane.showMessageDialog(this, "La fecha de cierre no puede estar vacía.");
+                    return;
+                }
+
+                if (sfecha2.before(sfecha)) {
+                    JOptionPane.showMessageDialog(this, "La fecha de cierre no puede ser anterior a la fecha de creación.");
+                    return;
+                }
+
+                Miembro miemSelec = (Miembro) cBoxMiembro.getSelectedItem();
+
+                String nombreT = txtNombreTarea.getText();
+
+                LocalDate fechaCre = sfecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+                LocalDate fechaCierre = sfecha2.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+                EquipoMiembros eqMiemb = equiMiemData.buscarEquipoMiembro(idEquipo, miemSelec.getIdMiembro());
+
+                boolean estado = true;
+
+                Tarea t = new Tarea(nombreT, fechaCre, fechaCierre, estado, eqMiemb);
+
+                tareaData.guardarTarea(t);
+
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Hay errores en los campos.");
+                txtNombreTarea.requestFocus();
+            }
         }
 
     }//GEN-LAST:event_btnAsignarActionPerformed
 
-    private void radBtnEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radBtnEstadoActionPerformed
+    private void cBoxMiembroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cBoxMiembroActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_radBtnEstadoActionPerformed
+        Miembro eqSelec = (Miembro) cBoxMiembro.getSelectedItem();
+    }//GEN-LAST:event_cBoxMiembroActionPerformed
 
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        // TODO add your handling code here:
+        limpiar();
+    }//GEN-LAST:event_btnLimpiarActionPerformed
 
+    private void cargaMiembroCBox() {
+        boolean band = false;
+        List<EquipoMiembros> listaMiembroXEq = equiMiemData.listarEquipoMiembrosPorIdEquipo(idEquipo);
+        List<Miembro> listaMiembro = miemData.listarMiembro();
+
+        for (Miembro miembro : listaMiembro) {
+            band = false;
+            for (EquipoMiembros miembroXEq : listaMiembroXEq) {
+                if (miembro.getIdMiembro() == miembroXEq.getMiembro().getIdMiembro()) {
+                    band = true;
+
+                }
+            }
+
+            if (band) {
+                cBoxMiembro.addItem(miembro);
+            }
+
+        }
+
+    }
+
+    public void limpiar() {
+        txtNombreTarea.setText("");
+        dateFechaCreacion.setDate(null);
+        dateFechaCierre.setDate(null);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAsignar;
     private javax.swing.JButton btnLimpiar;
     private javax.swing.JButton btnSalir;
-    private javax.swing.JComboBox<String> cBoxMiembro;
+    private javax.swing.JComboBox<Miembro> cBoxMiembro;
     private com.toedter.calendar.JDateChooser dateFechaCierre;
     private com.toedter.calendar.JDateChooser dateFechaCreacion;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JLabel lblEstado;
     private javax.swing.JLabel lblFechaCierre;
     private javax.swing.JLabel lblFechaCreacion;
     private javax.swing.JLabel lblMiembro;
     private javax.swing.JLabel lblNombreTarea;
     private javax.swing.JLabel lblTituloAsignarTareas;
-    private javax.swing.JRadioButton radBtnEstado;
     private javax.swing.JTextField txtNombreTarea;
     // End of variables declaration//GEN-END:variables
 }

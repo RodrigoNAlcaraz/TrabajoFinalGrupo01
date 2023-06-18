@@ -1,7 +1,6 @@
 package Controlador;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import Modelo.Miembro;
-import java.time.LocalDate;
 
 public class MiembroData {
 
@@ -67,6 +65,31 @@ public class MiembroData {
                 JOptionPane.showMessageDialog(null, "No hay miembro con ese id.");
             }
             ps.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "No se pudo buscar el miembro por problemas de conexion." + ex.getMessage());
+        }
+
+        return e;
+    }
+
+    public Miembro buscarMiembroPorDni(int dni) {
+        Miembro e = null; 
+        String sql = "SELECT * FROM miembro WHERE dni=? AND estado = 1";
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, dni);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    e = new Miembro(); 
+                    e.setIdMiembro(rs.getInt("idMiembro")); 
+                    e.setDni(rs.getInt("dni"));
+                    e.setApellido(rs.getString("apellido"));
+                    e.setNombre(rs.getString("nombre"));
+                    e.setEstado(rs.getBoolean("estado"));
+                } else {
+                    JOptionPane.showMessageDialog(null, "No hay miembro con ese DNI.");
+                }
+            }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "No se pudo buscar el miembro por problemas de conexion." + ex.getMessage());
         }

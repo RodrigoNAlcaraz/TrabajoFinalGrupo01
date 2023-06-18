@@ -5,10 +5,12 @@
  */
 package vistas;
 
+import Controlador.ComentariosData;
 import Controlador.EquipoData;
 import Controlador.EquipoMiembrosData;
 import Controlador.MiembroData;
 import Controlador.ProyectoData;
+import Controlador.TareaData;
 import Modelo.Equipo;
 import Modelo.EquipoMiembros;
 import Modelo.Proyecto;
@@ -26,10 +28,12 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ViewBuscarEquipo extends javax.swing.JFrame {
 
-    private EquipoData equiData;
     private ProyectoData proyecData;
+    private EquipoData equiData;
     private EquipoMiembrosData equiMiemData;
     private MiembroData miemData;
+    private TareaData tareaData;
+    private ComentariosData comData;
     private DefaultTableModel modelo;
     private int idLlevar;
 
@@ -44,28 +48,24 @@ public class ViewBuscarEquipo extends javax.swing.JFrame {
 
     }
 
-    ViewBuscarEquipo(EquipoData equiData, ProyectoData proyecData, EquipoMiembrosData equiMiemData) {
+    ViewBuscarEquipo(ProyectoData proyecData, EquipoData equiData, EquipoMiembrosData equiMiemData, MiembroData miemData, TareaData tareaData, ComentariosData comData) {
         initComponents();
-        this.equiData = equiData;
         this.proyecData = proyecData;
-        this.equiMiemData = equiMiemData;
-        modelo = new DefaultTableModel();
-        armarCabeceraTabla();
-        limpiarTabla();
-        txtIdEquipo.setEnabled(false);
-
-    }
-
-    ViewBuscarEquipo(EquipoData equiData, ProyectoData proyecData, EquipoMiembrosData equiMiemData, MiembroData miemData) {
-        initComponents();
         this.equiData = equiData;
-        this.proyecData = proyecData;
         this.equiMiemData = equiMiemData;
         this.miemData = miemData;
+        this.tareaData = tareaData;
+        this.comData = comData;
         modelo = new DefaultTableModel();
         armarCabeceraTabla();
         limpiarTabla();
         txtIdEquipo.setEnabled(false);
+        btnAsignarTarea.setEnabled(false);
+        btnVerTareas.setEnabled(false);
+    }
+
+    public int getIdLlevar() {
+        return idLlevar;
     }
 
     /**
@@ -314,7 +314,7 @@ public class ViewBuscarEquipo extends javax.swing.JFrame {
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         // TODO add your handling code here:
-        ViewPpalEquipo ppalEquipo = new ViewPpalEquipo();
+        ViewPpalEquipo ppalEquipo = new ViewPpalEquipo(proyecData, equiData, equiMiemData, miemData, tareaData, comData);
         ppalEquipo.setVisible(true);
         ppalEquipo.setLocationRelativeTo(null);
         this.dispose();
@@ -326,6 +326,8 @@ public class ViewBuscarEquipo extends javax.swing.JFrame {
         radBtnEstadoEquipo.setEnabled(false);
         txtProyecto.setEnabled(false);
         txtIdEquipo.setEnabled(false);
+        btnAsignarTarea.setEnabled(false);
+        btnVerTareas.setEnabled(false);
         String nombreEquipo = txtNombreEquipo.getText();
         boolean band = false;
 
@@ -346,7 +348,11 @@ public class ViewBuscarEquipo extends javax.swing.JFrame {
             txtProyecto.setText(equi.getProyecto().toString());
 
             llenarTabla(equi.getIdEquipo());
-            this.idLlevar=equi.getIdEquipo();
+            this.idLlevar = equi.getIdEquipo();
+            
+            
+            btnAsignarTarea.setEnabled(true);
+            btnVerTareas.setEnabled(true);
         } else {
             JOptionPane.showMessageDialog(this, "Equipo no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -354,7 +360,7 @@ public class ViewBuscarEquipo extends javax.swing.JFrame {
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         // TODO add your handling code here:
-        ViewListadoEquipo incMiem = new ViewListadoEquipo(equiData, miemData, equiMiemData, idLlevar);
+        ViewListadoEquipo incMiem = new ViewListadoEquipo(proyecData, equiData, equiMiemData, miemData, tareaData, comData);
         incMiem.setVisible(true);
         incMiem.setLocationRelativeTo(null);
         this.dispose();
@@ -374,7 +380,7 @@ public class ViewBuscarEquipo extends javax.swing.JFrame {
     private void btnAsignarTareaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsignarTareaActionPerformed
         // TODO add your handling code here:
 
-        ViewAsignarTareaMiembroEq asignarTarea = new ViewAsignarTareaMiembroEq();
+        ViewAsignarTareaMiembroEq asignarTarea = new ViewAsignarTareaMiembroEq(proyecData, equiData, equiMiemData, miemData, tareaData, comData, idLlevar);
         asignarTarea.setVisible(true);
         asignarTarea.setLocationRelativeTo(null);
         this.dispose();
@@ -383,7 +389,7 @@ public class ViewBuscarEquipo extends javax.swing.JFrame {
 
     private void btnVerTareasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerTareasActionPerformed
         // TODO add your handling code here:
-        ViewVerTarea verTarea = new ViewVerTarea();
+        ViewVerTarea verTarea = new ViewVerTarea(proyecData, equiData, equiMiemData, miemData, tareaData, comData, idLlevar);
         verTarea.setVisible(true);
         verTarea.setLocationRelativeTo(null);
         this.dispose();
@@ -458,7 +464,9 @@ public class ViewBuscarEquipo extends javax.swing.JFrame {
         txtProyecto.setText("");
         dateFechaCreacion.setDate(null);
         radBtnEstadoEquipo.setEnabled(false);
-        this.idLlevar=0;
+        this.idLlevar = -1;
+        btnAsignarTarea.setEnabled(false);
+        btnVerTareas.setEnabled(false);
 
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables

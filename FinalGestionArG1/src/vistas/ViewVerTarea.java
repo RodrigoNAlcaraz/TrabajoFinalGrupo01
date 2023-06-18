@@ -5,6 +5,21 @@
  */
 package vistas;
 
+import Controlador.ComentariosData;
+import Controlador.EquipoData;
+import Controlador.EquipoMiembrosData;
+import Controlador.MiembroData;
+import Controlador.ProyectoData;
+import Controlador.TareaData;
+import Modelo.Comentarios;
+import Modelo.EquipoMiembros;
+import Modelo.Miembro;
+import Modelo.Tarea;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
@@ -13,11 +28,33 @@ import javax.swing.JOptionPane;
  */
 public class ViewVerTarea extends javax.swing.JFrame {
 
+    private ProyectoData proyecData;
+    private EquipoData equiData;
+    private EquipoMiembrosData equiMiemData;
+    private MiembroData miemData;
+    private TareaData tareaData;
+    private ComentariosData comData;
+    private ViewBuscarEquipo busEq;
+    private int idEquipo;
+
     /**
      * Creates new form ViewVerTarea
      */
     public ViewVerTarea() {
         initComponents();
+    }
+
+    ViewVerTarea(ProyectoData proyecData, EquipoData equiData, EquipoMiembrosData equiMiemData, MiembroData miemData, TareaData tareaData, ComentariosData comData, int idLlevar) {
+        initComponents();
+        this.proyecData = proyecData;
+        this.equiData = equiData;
+        this.equiMiemData = equiMiemData;
+        this.miemData = miemData;
+        this.tareaData = tareaData;
+        this.comData = comData;
+        this.idEquipo = idLlevar;
+        cargaMiembroCBox();
+        cargaTareaMCBox();
     }
 
     /**
@@ -35,12 +72,12 @@ public class ViewVerTarea extends javax.swing.JFrame {
         cBoxMiembro = new javax.swing.JComboBox<>();
         lblEstado = new javax.swing.JLabel();
         radBtnEstado = new javax.swing.JRadioButton();
-        cBoxMiembro1 = new javax.swing.JComboBox<>();
+        cBoxTarea = new javax.swing.JComboBox<>();
         lblTituloAsignarTareas1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         lblTituloAsignarTareas = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txAreaComentario = new javax.swing.JTextArea();
         lblMiembro1 = new javax.swing.JLabel();
         lblFechaCreacion = new javax.swing.JLabel();
         dateFechaCreacion = new com.toedter.calendar.JDateChooser();
@@ -56,12 +93,24 @@ public class ViewVerTarea extends javax.swing.JFrame {
         lblMiembro.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
         lblMiembro.setText("Miembro:");
 
+        cBoxMiembro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cBoxMiembroActionPerformed(evt);
+            }
+        });
+
         lblEstado.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
         lblEstado.setText("Estado:");
 
         radBtnEstado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 radBtnEstadoActionPerformed(evt);
+            }
+        });
+
+        cBoxTarea.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cBoxTareaActionPerformed(evt);
             }
         });
 
@@ -73,9 +122,9 @@ public class ViewVerTarea extends javax.swing.JFrame {
         lblTituloAsignarTareas.setFont(new java.awt.Font("Sylfaen", 3, 24)); // NOI18N
         lblTituloAsignarTareas.setText("Progreso:");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        txAreaComentario.setColumns(20);
+        txAreaComentario.setRows(5);
+        jScrollPane1.setViewportView(txAreaComentario);
 
         lblMiembro1.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
         lblMiembro1.setText("Comentario:");
@@ -85,6 +134,11 @@ public class ViewVerTarea extends javax.swing.JFrame {
 
         btnLimpiar.setFont(new java.awt.Font("Tahoma", 2, 18)); // NOI18N
         btnLimpiar.setText("Limpiar");
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
 
         btnAsignar.setFont(new java.awt.Font("Tahoma", 2, 18)); // NOI18N
         btnAsignar.setText("Guardar");
@@ -143,7 +197,7 @@ public class ViewVerTarea extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblFechaCreacion)
                     .addComponent(dateFechaCreacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(136, Short.MAX_VALUE))
+                .addContainerGap(149, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addContainerGap(276, Short.MAX_VALUE)
@@ -167,7 +221,7 @@ public class ViewVerTarea extends javax.swing.JFrame {
                 .addGap(73, 73, 73)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(cBoxMiembro, 0, 307, Short.MAX_VALUE)
-                    .addComponent(cBoxMiembro1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cBoxTarea, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(radBtnEstado))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
@@ -188,7 +242,7 @@ public class ViewVerTarea extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblNombreTarea)
-                    .addComponent(cBoxMiembro1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cBoxTarea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(lblEstado)
@@ -220,6 +274,36 @@ public class ViewVerTarea extends javax.swing.JFrame {
         int opcion = JOptionPane.showConfirmDialog(this, "¿Desea guardar el progreso?", "Confirmación", JOptionPane.YES_NO_OPTION);
         if (opcion == JOptionPane.YES_OPTION) {
             //si confirma que si, empezar con el codigo aca abajo
+            try {
+                 if (txAreaComentario.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "El campo nombre de la tarea no puede estar vacío.");
+                    txAreaComentario.requestFocus();
+                    return;
+                }
+
+                Date sfecha = dateFechaCreacion.getDate();
+                if (sfecha == null) {
+                    JOptionPane.showMessageDialog(this, "La fecha de creación no puede estar vacía.");
+                    return;
+                }
+
+                Miembro miemSelec = (Miembro) cBoxMiembro.getSelectedItem();
+                Tarea tareaSel = (Tarea) cBoxTarea.getSelectedItem();
+
+                String coment = txAreaComentario.getText();
+
+                LocalDate fechaCre = sfecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+                boolean estado = true;
+
+                Comentarios c = new Comentarios(coment, fechaCre, tareaSel, estado);
+
+                comData.guardarComentario(c);
+                
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Hay errores en los campos.");
+                txAreaComentario.requestFocus();
+            }
 
         }
     }//GEN-LAST:event_btnAsignarActionPerformed
@@ -227,25 +311,81 @@ public class ViewVerTarea extends javax.swing.JFrame {
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
 
         // TODO add your handling code here:
-        ViewBuscarEquipo ppalBusEquipo = new ViewBuscarEquipo();
+        ViewBuscarEquipo ppalBusEquipo = new ViewBuscarEquipo(proyecData, equiData, equiMiemData, miemData, tareaData, comData);
         ppalBusEquipo.setVisible(true);
         ppalBusEquipo.setLocationRelativeTo(null);
         this.dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
 
-  
+    private void cBoxMiembroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cBoxMiembroActionPerformed
+        // TODO add your handling code here:
+
+        Miembro miemSel = (Miembro) cBoxMiembro.getSelectedItem();
+        cargaTareaMCBox();
+    }//GEN-LAST:event_cBoxMiembroActionPerformed
+
+    private void cBoxTareaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cBoxTareaActionPerformed
+        // TODO add your handling code here:
+        Tarea tareaSel = (Tarea) cBoxTarea.getSelectedItem();
+    }//GEN-LAST:event_cBoxTareaActionPerformed
+
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        // TODO add your handling code here:
+        limpiar();
+    }//GEN-LAST:event_btnLimpiarActionPerformed
+    private void cargaMiembroCBox() {
+        boolean band = false;
+
+        List<EquipoMiembros> listaMiembroXEq = equiMiemData.listarEquipoMiembrosPorIdEquipo(idEquipo);
+        List<Miembro> listaMiembro = miemData.listarMiembro();
+
+        for (Miembro miembro : listaMiembro) {
+            band = false;
+            for (EquipoMiembros miembroXEq : listaMiembroXEq) {
+                if (miembro.getIdMiembro() == miembroXEq.getMiembro().getIdMiembro()) {
+                    band = true;
+
+                }
+            }
+
+            if (band) {
+                cBoxMiembro.addItem(miembro);
+            }
+
+        }
+    }
+
+    private void cargaTareaMCBox() {
+
+        cBoxTarea.removeAllItems();
+
+        Miembro miemSel = (Miembro) cBoxMiembro.getSelectedItem();
+        int idEqMiemb = equiMiemData.buscarIdMiembroEq(idEquipo, miemSel.getIdMiembro());
+
+        ArrayList<Tarea> listaTarea = (ArrayList<Tarea>) tareaData.listarTareasPorIdMiembroEQ(idEqMiemb);
+
+        for (Tarea tarea : listaTarea) {
+            cBoxTarea.addItem(tarea);
+            System.out.println(tarea);
+        }
+    }
+
+    public void limpiar() {
+        txAreaComentario.setText("");
+        dateFechaCreacion.setDate(null);
+
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAsignar;
     private javax.swing.JButton btnLimpiar;
     private javax.swing.JButton btnSalir;
-    private javax.swing.JComboBox<String> cBoxMiembro;
-    private javax.swing.JComboBox<String> cBoxMiembro1;
+    private javax.swing.JComboBox<Miembro> cBoxMiembro;
+    private javax.swing.JComboBox<Tarea> cBoxTarea;
     private com.toedter.calendar.JDateChooser dateFechaCreacion;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel lblEstado;
     private javax.swing.JLabel lblFechaCreacion;
     private javax.swing.JLabel lblMiembro;
@@ -254,5 +394,6 @@ public class ViewVerTarea extends javax.swing.JFrame {
     private javax.swing.JLabel lblTituloAsignarTareas;
     private javax.swing.JLabel lblTituloAsignarTareas1;
     private javax.swing.JRadioButton radBtnEstado;
+    private javax.swing.JTextArea txAreaComentario;
     // End of variables declaration//GEN-END:variables
 }

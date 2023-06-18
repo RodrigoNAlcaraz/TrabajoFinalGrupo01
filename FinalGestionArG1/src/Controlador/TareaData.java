@@ -81,7 +81,7 @@ public class TareaData {
     }
 
     public List<Tarea> listarTareasPorIdMiembroEQ(int id) {
-        List<Tarea> tareaLista = new ArrayList<>();
+        List<Tarea> listaRecibida = new ArrayList<>();
         try {
             String sql = "SELECT idTarea, nombre, fechaCreacion, fechaCierre, Estado\n"
                     + "FROM tarea\n"
@@ -90,7 +90,7 @@ public class TareaData {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
-            ArrayList<Tarea> listaRecibida = new ArrayList<Tarea>();
+
             while (rs.next()) {
                 Tarea a = new Tarea();
                 a.setIdTarea(rs.getInt("idTarea"));
@@ -99,16 +99,13 @@ public class TareaData {
                 a.setFechaCierre(rs.getDate("fechaCierre").toLocalDate());
                 a.setEstado(rs.getBoolean("estado"));
                 listaRecibida.add(a);
-               
             }
-            for (Tarea x : listaRecibida) {
-                System.out.println(x);
-            }
+
             ps.close();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, " Error en la busqueda." + ex.getMessage());
         }
-        return tareaLista;
+        return listaRecibida;
     }
 
     public void activarTarea(int id) {
@@ -150,4 +147,7 @@ public class TareaData {
         }
         return p;
     }
+    
+    
 }
+

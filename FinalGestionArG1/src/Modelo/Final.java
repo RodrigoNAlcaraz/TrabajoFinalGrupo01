@@ -28,8 +28,8 @@ public class Final {
         ComentariosData cd = new ComentariosData(con);
 
         
-        
-        System.out.println(ed.buscarEquipoPorNombre("grupo 1"));
+        System.out.println("probadno main: "+td.listarTareasPorIdMiembroEQ(39));
+        //System.out.println(ed.buscarEquipoPorNombre("grupo 1"));
         
 //        equipoData ed = new equipoData(con);
 //miembro miembrotest = new miembro(153251, "alverti", "juan carlos", true);

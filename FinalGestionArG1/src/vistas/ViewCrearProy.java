@@ -1,7 +1,9 @@
 package vistas;
 
+import Controlador.EquipoData;
 import Controlador.ProyectoData;
 import Modelo.Proyecto;
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -10,14 +12,17 @@ import javax.swing.JOptionPane;
 public class ViewCrearProy extends javax.swing.JFrame {
 
     private ProyectoData pd;
+    private EquipoData equiData;
 
     public ViewCrearProy() {
         initComponents();
     }
 
-    public ViewCrearProy(ProyectoData pd) {
+
+    public ViewCrearProy(ProyectoData pd, EquipoData equiData) {
         initComponents();
         this.pd = pd;
+        this.equiData = equiData;
     }
 
     @SuppressWarnings("unchecked")
@@ -152,37 +157,58 @@ public class ViewCrearProy extends javax.swing.JFrame {
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         // TODO add your handling code here:
-        ViewPpalProyec ppalProyec = new ViewPpalProyec(pd);
+        ViewPpalProyec ppalProyec = new ViewPpalProyec(pd,equiData);
         ppalProyec.setVisible(true);
         ppalProyec.setLocationRelativeTo(null);
         this.dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void btnCrearProActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearProActionPerformed
+
         int opcion = JOptionPane.showConfirmDialog(this, "¿Estás seguro de guardar?", "Confirmación", JOptionPane.YES_NO_OPTION);
         if (opcion == JOptionPane.YES_OPTION) {
-            try {
-                String nombreProy = txtNombreProy.getText();
-                String descripcion = txtDescripcion.getText();
-                Date fechaCreacion = dateFechaInicio.getDate();
+            String nombreProy = txtNombreProy.getText();
+            String descripcion = txtDescripcion.getText();
 
-                LocalDate fechaCrea = fechaCreacion.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-
-                boolean estado = true;
-                Proyecto nuevo = new Proyecto(nombreProy, descripcion, fechaCrea, estado);
-                pd.guardarProyecto(nuevo);
-                limpiar();
-
-            } catch (Exception ex) {
-
-                JOptionPane.showMessageDialog(this, "Hay un error en los datos ingresados");
+            if (nombreProy.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "El campo Nombre no puede estar vacío", "Error", JOptionPane.ERROR_MESSAGE);
                 txtNombreProy.requestFocus();
+                return;
             }
+
+            if (descripcion.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "El campo Descripción no puede estar vacío", "Error", JOptionPane.ERROR_MESSAGE);
+                txtDescripcion.requestFocus();
+                return;
+            }
+
+            Date fechaCreacion = dateFechaInicio.getDate();
+            if (fechaCreacion == null) {
+                JOptionPane.showMessageDialog(this, "Error en la fecha ingresada", "Error", JOptionPane.ERROR_MESSAGE);
+                dateFechaInicio.requestFocus();
+                return;
+            }
+
+            LocalDate fechaCrea;
+            try {
+                fechaCrea = fechaCreacion.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            } catch (DateTimeException dte) {
+                JOptionPane.showMessageDialog(this, "Error en la fecha ingresada", "Error", JOptionPane.ERROR_MESSAGE);
+                dateFechaInicio.requestFocus();
+                return;
+            }
+
+            boolean estado = true;
+            Proyecto nuevo = new Proyecto(nombreProy, descripcion, fechaCrea, estado);
+            pd.guardarProyecto(nuevo);
+            limpiar();
         }
+
+
     }//GEN-LAST:event_btnCrearProActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
-       limpiar();
+        limpiar();
     }//GEN-LAST:event_btnLimpiarActionPerformed
     private void limpiar() {
         txtNombreProy.setText("");

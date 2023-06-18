@@ -20,26 +20,14 @@ import java.awt.Color;
  */
 public class ViewPpalEquipo extends javax.swing.JFrame {
 
-    private Conexion con;
-    private EquipoData equiData;
-
     private ProyectoData proyecData;
+    private EquipoData equiData;
     private EquipoMiembrosData equiMiemData;
     private MiembroData miemData;
     private TareaData tareaData;
     private ComentariosData comData;
 
-    public ViewPpalEquipo(EquipoData equiData, Conexion con) {
-        initComponents();
-        this.con = con;
-        this.equiData = equiData;
-        this.proyecData = new ProyectoData(con);
-        this.equiMiemData = new EquipoMiembrosData(con);
-        this.miemData = new MiembroData(con);
-        this.tareaData = new TareaData(con);
-        this.comData = new ComentariosData(con);
-    }
-
+  
     public ViewPpalEquipo(EquipoData equiData, ProyectoData proyecData) {
         initComponents();
         this.equiData = equiData;
@@ -47,7 +35,17 @@ public class ViewPpalEquipo extends javax.swing.JFrame {
     }
 
     ViewPpalEquipo() {
-       initComponents();
+        initComponents();
+    }
+
+    public ViewPpalEquipo(ProyectoData proyecData, EquipoData equiData, EquipoMiembrosData equiMiemData, MiembroData miemData, TareaData tareaData, ComentariosData comData) {
+        initComponents();
+        this.proyecData = proyecData;
+        this.equiData = equiData;
+        this.equiMiemData = equiMiemData;
+        this.miemData = miemData;
+        this.tareaData = tareaData;
+        this.comData = comData;
     }
 
     /**
@@ -179,7 +177,7 @@ public class ViewPpalEquipo extends javax.swing.JFrame {
     private void btnBuscarEquipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarEquipoActionPerformed
         // TODO add your handling code here:
 
-        ViewBuscarEquipo buscarEquipo = new ViewBuscarEquipo(equiData, proyecData,equiMiemData,miemData);
+        ViewBuscarEquipo buscarEquipo = new ViewBuscarEquipo(proyecData, equiData, equiMiemData, miemData,tareaData,comData);
         buscarEquipo.setVisible(true);
         buscarEquipo.setLocationRelativeTo(null);
         this.dispose();
@@ -188,7 +186,7 @@ public class ViewPpalEquipo extends javax.swing.JFrame {
     private void btnListadoEquiposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListadoEquiposActionPerformed
         // TODO add your handling code here:
 
-        ViewListadoEquipo listadoEquipo = new ViewListadoEquipo();
+        ViewListadoEquipo listadoEquipo = new ViewListadoEquipo(proyecData, equiData, equiMiemData, miemData,tareaData,comData);
         listadoEquipo.setVisible(true);
         listadoEquipo.setLocationRelativeTo(null);
         this.dispose();

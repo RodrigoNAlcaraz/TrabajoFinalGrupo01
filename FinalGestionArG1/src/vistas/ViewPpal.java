@@ -187,7 +187,7 @@ public class ViewPpal extends javax.swing.JFrame {
     private void btnEquiposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEquiposActionPerformed
         // TODO add your handling code here:
 
-        ViewPpalEquipo ppalEquipo = new ViewPpalEquipo(equiData, con);
+        ViewPpalEquipo ppalEquipo = new ViewPpalEquipo(proyecData,equiData,equiMiemData,miemData,tareaData,comData);
         ppalEquipo.setBackground(Color.lightGray);
         ppalEquipo.setVisible(true);
         ppalEquipo.setLocationRelativeTo(null);

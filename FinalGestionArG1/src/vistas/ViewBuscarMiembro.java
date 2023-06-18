@@ -157,22 +157,20 @@ public class ViewBuscarMiembro extends javax.swing.JFrame {
                             .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
-                                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
-                                            .addComponent(radBtnEstado)
-                                            .addGap(18, 18, 18)
-                                            .addComponent(lblActivoONo, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 93, Short.MAX_VALUE)
-                                            .addComponent(lblEliminar))
-                                        .addComponent(txtDNI, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(radBtnEstado)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(lblActivoONo, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 93, Short.MAX_VALUE)
+                                    .addComponent(lblEliminar)
                                     .addGap(6, 6, 6)
                                     .addComponent(radBtnEliminar))
                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
-                                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(txtApellido, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE)
-                                        .addComponent(txtIdMiembro, javax.swing.GroupLayout.Alignment.LEADING))
+                                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtDNI, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGap(18, 18, 18)
-                                    .addComponent(btnBuscar))))
+                                    .addComponent(btnBuscar)))
+                            .addComponent(txtIdMiembro, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(64, 64, 64)
@@ -192,9 +190,9 @@ public class ViewBuscarMiembro extends javax.swing.JFrame {
                 .addComponent(lblTituloBuscaMiembro)
                 .addGap(44, 44, 44)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblLegajoMiembro)
-                    .addComponent(txtIdMiembro, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblProyecto)
+                    .addComponent(txtDNI, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
@@ -206,10 +204,10 @@ public class ViewBuscarMiembro extends javax.swing.JFrame {
                             .addComponent(lblNombre)
                             .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(27, 27, 27)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblProyecto)
-                            .addComponent(txtDNI, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(27, 27, 27)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblLegajoMiembro)
+                            .addComponent(txtIdMiembro, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(26, 26, 26)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblEstadoEquipo)
                             .addComponent(radBtnEstado)
@@ -243,47 +241,43 @@ public class ViewBuscarMiembro extends javax.swing.JFrame {
 
     private void radBtnEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radBtnEstadoActionPerformed
         // TODO add your handling code here:
-
-        if (radBtnEstado.isSelected()) {
-
-            lblActivoONo.setText("Activo");
-            lblActivoONo.setForeground(Color.BLACK);
-        } else {
-            lblActivoONo.setText("Eliminar ");
-            lblActivoONo.setForeground(Color.RED);
-        }
+        estadoBtn();
 
 
     }//GEN-LAST:event_radBtnEstadoActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         // TODO add your handling code here:
+
         radBtnEliminar.setSelected(false);
         radBtnEstado.setEnabled(false);
-        Integer id = 0;
+        Integer dni = 0;
+
         try {
-            id = Integer.parseInt(txtIdMiembro.getText());
+            dni = Integer.parseInt(txtDNI.getText());
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Valor ingresado invalido, ingrese numeros");
-            txtIdMiembro.requestFocus();// vuelve al comp
+            JOptionPane.showMessageDialog(this, "Valor ingresado invalido, ingrese numeros para el DNI");
+            txtDNI.requestFocus(); // vuelve al componente DNI
+            return; // Salimos del método
         }
 
-        //Alumno alumno = new AlumnoData(con).buscarAlumno(id);
-        Miembro miem = new Miembro();
-        miem = miemData.buscarMiembro(id);
+        //Miembro miem = new Miembro();
+        Miembro miem = miemData.buscarMiembroPorDni(dni);
 
-        if (miem.getIdMiembro() != 0) {
-            //Cambiar int a string
+        if (miem != null) { // Ahora comprobamos si el miembro es null, en lugar de verificar si el ID es 0
 
             String idMiembro = String.valueOf(miem.getIdMiembro());
-            String dni = String.valueOf(miem.getDni());
+            String dniMiembro = String.valueOf(miem.getDni());
 
             txtIdMiembro.setText(idMiembro);
             txtApellido.setText(miem.getApellido());
             txtNombre.setText(miem.getNombre());
-            txtDNI.setText(dni);
+            txtDNI.setText(dniMiembro);
             radBtnEstado.setSelected(miem.isEstado());
 
+            estadoBtn();
+        } else {
+            JOptionPane.showMessageDialog(this, "No se encontró un miembro con ese DNI");
         }
 
 
@@ -342,7 +336,7 @@ public class ViewBuscarMiembro extends javax.swing.JFrame {
             radBtnEstado.setSelected(true);
             radBtnEliminar.setSelected(false);
         }
-
+        estadoBtn();
 
     }//GEN-LAST:event_radBtnEliminarActionPerformed
     public void limpiar() {
@@ -353,6 +347,17 @@ public class ViewBuscarMiembro extends javax.swing.JFrame {
         radBtnEstado.setEnabled(false);
         radBtnEstado.setSelected(false);
         radBtnEliminar.setSelected(false);
+    }
+
+    public void estadoBtn() {
+        if (radBtnEstado.isSelected()) {
+
+            lblActivoONo.setText("Activo");
+            lblActivoONo.setForeground(Color.BLACK);
+        } else {
+            lblActivoONo.setText("Eliminar ");
+            lblActivoONo.setForeground(Color.RED);
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

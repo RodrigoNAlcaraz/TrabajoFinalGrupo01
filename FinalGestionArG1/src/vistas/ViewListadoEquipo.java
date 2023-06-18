@@ -5,10 +5,12 @@
  */
 package vistas;
 
+import Controlador.ComentariosData;
 import Controlador.EquipoData;
 import Controlador.EquipoMiembrosData;
 import Controlador.MiembroData;
 import Controlador.ProyectoData;
+import Controlador.TareaData;
 import Modelo.Equipo;
 import Modelo.EquipoMiembros;
 import Modelo.Miembro;
@@ -25,9 +27,12 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ViewListadoEquipo extends javax.swing.JFrame {
 
+    private ProyectoData proyecData;
     private EquipoData equiData;
-    private MiembroData miemData;
     private EquipoMiembrosData equiMiemData;
+    private MiembroData miemData;
+    private TareaData tareaData;
+    private ComentariosData comData;
     private int id;
     private DefaultTableModel modelo;
     private DefaultTableModel modelo2;
@@ -39,32 +44,23 @@ public class ViewListadoEquipo extends javax.swing.JFrame {
         initComponents();
         modelo = new DefaultTableModel();
         modelo2 = new DefaultTableModel();
+        cargaEquiposCBox();
         armarCabeceraTabla();
         limpiarTabla();
         llenarTabla();
     }
 
-    public ViewListadoEquipo(EquipoData equiData, MiembroData miemData, EquipoMiembrosData equiMiemData) {
+    ViewListadoEquipo(ProyectoData proyecData, EquipoData equiData, EquipoMiembrosData equiMiemData, MiembroData miemData, TareaData tareaData, ComentariosData comData) {
         initComponents();
+        this.proyecData = proyecData;
         this.equiData = equiData;
-        this.miemData = miemData;
         this.equiMiemData = equiMiemData;
+        this.miemData = miemData;
+        this.tareaData = tareaData;
+        this.comData = comData;
         modelo = new DefaultTableModel();
         modelo2 = new DefaultTableModel();
-        armarCabeceraTabla();
-        limpiarTabla();
-        llenarTabla();
-
-    }
-
-    ViewListadoEquipo(EquipoData equiData, MiembroData miemData, EquipoMiembrosData equiMiemData, int idLlevar) {
-        initComponents();
-        this.equiData = equiData;
-        this.miemData = miemData;
-        this.equiMiemData = equiMiemData;
-        this.id = idLlevar;
-        modelo = new DefaultTableModel();
-        modelo2 = new DefaultTableModel();
+        cargaEquiposCBox();
         armarCabeceraTabla();
         limpiarTabla();
         llenarTabla();
@@ -90,6 +86,8 @@ public class ViewListadoEquipo extends javax.swing.JFrame {
         btnIncorporar = new javax.swing.JButton();
         btnSalir2 = new javax.swing.JButton();
         btnRemover = new javax.swing.JButton();
+        cBoxElegirEquipo = new javax.swing.JComboBox<>();
+        lblSubTituloListado1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -160,6 +158,15 @@ public class ViewListadoEquipo extends javax.swing.JFrame {
             }
         });
 
+        cBoxElegirEquipo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cBoxElegirEquipoActionPerformed(evt);
+            }
+        });
+
+        lblSubTituloListado1.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
+        lblSubTituloListado1.setText("Seleccione un equipo:");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -172,18 +179,22 @@ public class ViewListadoEquipo extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(37, 37, 37)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 517, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 517, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                                .addComponent(lblSubTituloListado1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cBoxElegirEquipo, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 517, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 517, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnIncorporar)
                             .addComponent(btnRemover, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(195, 195, 195)
+                        .addGap(231, 231, 231)
                         .addComponent(lblSubTituloListado))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(229, 229, 229)
+                        .addGap(228, 228, 228)
                         .addComponent(lblSubTituloListado2)))
                 .addContainerGap(32, Short.MAX_VALUE))
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -198,19 +209,25 @@ public class ViewListadoEquipo extends javax.swing.JFrame {
                 .addGap(27, 27, 27)
                 .addComponent(lblTituloListadoPersonal)
                 .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cBoxElegirEquipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblSubTituloListado1))
+                .addGap(18, 18, 18)
                 .addComponent(lblSubTituloListado)
-                .addGap(11, 11, 11)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addComponent(btnRemover, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(54, 54, 54)
-                        .addComponent(lblSubTituloListado2))
-                    .addComponent(btnRemover, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnIncorporar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(102, Short.MAX_VALUE))
+                        .addGap(35, 35, 35)
+                        .addComponent(lblSubTituloListado2)
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnIncorporar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(71, Short.MAX_VALUE))
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                     .addContainerGap(561, Short.MAX_VALUE)
@@ -258,16 +275,15 @@ public class ViewListadoEquipo extends javax.swing.JFrame {
 
     private void btnSalir2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalir2ActionPerformed
         // TODO add your handling code here:
-        /*ViewPpalMiembro ppalMiembro = new ViewPpalMiembro(miemData);
+        ViewPpalEquipo ppalMiembro = new ViewPpalEquipo(proyecData, equiData, equiMiemData, miemData,tareaData,comData);
         ppalMiembro.setVisible(true);
         ppalMiembro.setLocationRelativeTo(null);
-        this.dispose();*/
+        this.dispose();
     }//GEN-LAST:event_btnSalir2ActionPerformed
 
     private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
         // TODO add your handling code here:
 
-        // TODO add your handling code here:
         int filaSeleccionada = tablaMiembrosDEqu.getSelectedRow();
 
         if (filaSeleccionada != -1) {
@@ -286,6 +302,15 @@ public class ViewListadoEquipo extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_btnRemoverActionPerformed
+
+    private void cBoxElegirEquipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cBoxElegirEquipoActionPerformed
+        // TODO add your handling code here:
+        Equipo eqSelec = (Equipo) cBoxElegirEquipo.getSelectedItem();
+        this.id = eqSelec.getIdEquipo();
+        limpiarTabla();
+        llenarTabla();
+
+    }//GEN-LAST:event_cBoxElegirEquipoActionPerformed
 
     private void armarCabeceraTabla() {
         ArrayList<Object> filaCabecera = new ArrayList<>();
@@ -344,15 +369,24 @@ public class ViewListadoEquipo extends javax.swing.JFrame {
         }
     }
 
+    private void cargaEquiposCBox() {
+        List<Equipo> listaEq = equiData.listarEquipo();
+        for (Equipo equipo : listaEq) {
+
+            cBoxElegirEquipo.addItem(equipo);
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnIncorporar;
     private javax.swing.JButton btnRemover;
     private javax.swing.JButton btnSalir2;
+    private javax.swing.JComboBox<Equipo> cBoxElegirEquipo;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblSubTituloListado;
+    private javax.swing.JLabel lblSubTituloListado1;
     private javax.swing.JLabel lblSubTituloListado2;
     private javax.swing.JLabel lblTituloListadoPersonal;
     private javax.swing.JTable tablaMiembTotales;

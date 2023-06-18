@@ -133,7 +133,7 @@ public class ViewPpalProyec extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSalirActionPerformed
     private void btnCrearProyectoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearProyectoActionPerformed
         // TODO add your handling code here:
-        ViewCrearProy crearProyecto = new ViewCrearProy(proyectoData);
+        ViewCrearProy crearProyecto = new ViewCrearProy(proyectoData,equiData);
         crearProyecto.setVisible(true);
         crearProyecto.setLocationRelativeTo(null);
         this.dispose();
@@ -149,7 +149,7 @@ public class ViewPpalProyec extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBuscarProyectoActionPerformed
     private void btnCrearProyecto1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearProyecto1ActionPerformed
         // TODO add your handling code here:
-        ViewListaProyectos listaProyecto = new ViewListaProyectos(proyectoData);
+        ViewListaProyectos listaProyecto = new ViewListaProyectos(proyectoData,equiData);
         listaProyecto.setVisible(true);
         listaProyecto.setLocationRelativeTo(null);
         this.dispose();

@@ -224,38 +224,36 @@ public class EquipoMiembrosData {
         return -1;  // Retornar -1 en caso de error
     }
 
-}
-
-/*
-    
-    
-    public void eliminarEquipoMiembro(int id) {
-
+    public EquipoMiembros buscarEquipoMiembro(int idEquipo, int idMiembro) {
         try {
-            String sql = "UPDATE equipomiembros SET estado = 0 WHERE idMiembroEq = ? ";
+            String sql = "SELECT * FROM equipomiembros WHERE idEquipo = ? AND idMiembro = ?";
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, id);
-            ps.executeUpdate();
-            ps.close();
-            JOptionPane.showMessageDialog(null, " Se eliminó el equipo miembro.");
+            ps.setInt(1, idEquipo);
+            ps.setInt(2, idMiembro);
+            ResultSet rs = ps.executeQuery();
 
+            if (rs.next()) {
+                // Obtener los datos del equipo miembro de la base de datos
+                int idMiembroEq = rs.getInt("idMiembroEq");
+                LocalDate fechaIncorporacion = rs.getDate("fechaIncorporacion").toLocalDate();
+                boolean estado = rs.getBoolean("estado");
+
+                // Crear y devolver el objeto EquipoMiembros
+                EquipoData ed = new EquipoData(conexion);
+                MiembroData md = new MiembroData(conexion);
+                Equipo eq = ed.buscarEquipoPorIdEquipo(idEquipo);
+                Miembro miem = md.buscarMiembro(idMiembro);
+
+                return new EquipoMiembros(idMiembroEq, fechaIncorporacion, eq, miem, estado);
+            } else {
+                JOptionPane.showMessageDialog(null, "No se encontró el miembro en el equipo.");
+                return null;
+            }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, " No se pudo eliminar el equipo miembro de la bd." + e.getMessage());
-        }
-    }*/
- /*
-    public void eliminarEquipoMiembro(int id) {
-
-        try {
-            String sql = "UPDATE equipomiembros SET estado = 0 WHERE idMiembroEq = ? ";
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, id);
-            ps.executeUpdate();
-            ps.close();
-            JOptionPane.showMessageDialog(null, " Se eliminó el equipo miembro.");
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, " No se pudo eliminar el equipo miembro." + e.getMessage());
+            JOptionPane.showMessageDialog(null, "No se pudo buscar el EquipoMiembro: " + e.getMessage());
+            return null;
         }
     }
- */
+
+}
+
