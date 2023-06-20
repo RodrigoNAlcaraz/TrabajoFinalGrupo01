@@ -71,7 +71,7 @@ public class Final {
         //em.modificarEquipoMiembro(37, x);
         //em.activarEquipoMiembro(23);
 //        em.listarEquipoMiembrosPorID(10);
-        Tarea t = new Tarea(4, "limpiar", LocalDate.of(2020, 2, 2), LocalDate.of(2023, 6, 11), true, x);
+        Tarea t = new Tarea(4, "limpiar", LocalDate.of(2020, 2, 2), LocalDate.of(2023, 6, 11), 1, x);
         //td.listarTareasPorId(23);
         //td.guardarTarea(t);
         //td.eliminarTarea(4);

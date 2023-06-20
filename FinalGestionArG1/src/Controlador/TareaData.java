@@ -49,7 +49,7 @@ public class TareaData {
             ps.setString(1, t.getNombre());
             ps.setDate(2, Date.valueOf(t.getFechaCreacion()));
             ps.setDate(3, Date.valueOf(t.getFechaCierre()));
-            ps.setInt(4, t.isEstado() ? 1 : 0);
+            ps.setInt(4, t.getEstado());
             ps.setInt(5, t.getEquipomiembros().getIdMiembroEq());
             ps.executeUpdate();
             ResultSet rs = ps.getGeneratedKeys();
@@ -97,7 +97,7 @@ public class TareaData {
                 a.setNombre(rs.getString("nombre"));
                 a.setFechaCreacion(rs.getDate("fechaCreacion").toLocalDate());
                 a.setFechaCierre(rs.getDate("fechaCierre").toLocalDate());
-                a.setEstado(rs.getBoolean("estado"));
+                a.setEstado(rs.getInt("estado"));
                 listaRecibida.add(a);
             }
 
@@ -133,7 +133,7 @@ public class TareaData {
             ps.setString(1, p.getNombre());
             ps.setDate(2, Date.valueOf(p.getFechaCreacion()));
             ps.setDate(3, Date.valueOf(p.getFechaCierre()));
-            ps.setInt(4, p.isEstado() ? 1 : 0);
+            ps.setInt(4, p.getEstado());
             ps.setInt(5, p.getEquipomiembros().getIdMiembroEq());
             ps.setInt(6, id);
             int exito = ps.executeUpdate();
@@ -147,7 +147,31 @@ public class TareaData {
         }
         return p;
     }
-    
-    
-}
 
+    public void actualizarEstadoTarea(int id, int estado) {
+        try {
+            if (estado < 0 || estado > 3) {
+                JOptionPane.showMessageDialog(null, "El estado proporcionado no es válido. Debe ser 0, 1, 2 o 3.");
+                return;
+            }
+            String sql = "UPDATE tarea SET estado = ? WHERE idTarea = ? ";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, estado);
+            ps.setInt(2, id);
+            ps.executeUpdate();
+            ps.close();
+
+            if(estado ==0){
+                JOptionPane.showMessageDialog(null, "La tarea fue desactivada");
+            }
+            if(estado ==3){
+                 JOptionPane.showMessageDialog(null, "La tarea ha sido terminada");
+            }
+    
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, " No se pudo actualizar el estado de la tarea. " + e.getMessage());
+        }
+    }
+
+}

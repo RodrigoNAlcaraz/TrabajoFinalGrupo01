@@ -31,13 +31,14 @@ public class ComentariosData {
     }
 
     public void guardarComentario(Comentarios coment) {
-        String sql = "INSERT INTO comentarios (comentario, fechaAvance, idTarea) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO comentarios (comentario, fechaAvance, idTarea, estado) VALUES (?, ?,?, ?)";
         try {
             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, coment.getComentario());
             ps.setDate(2, Date.valueOf(coment.getFechaAvance()));
             ps.setInt(3, coment.getTarea().getIdTarea());
-           
+            ps.setInt(4, coment.isEstado() ? 1 : 0);
+
             ps.executeUpdate();
             ResultSet rs = ps.getGeneratedKeys();
             if (rs.next()) {
@@ -51,6 +52,7 @@ public class ComentariosData {
             JOptionPane.showMessageDialog(null, "No se pudo añadir el comentario." + ex.getMessage());
         }
     }
+
     public void eliminaComentario(int id) {
 
         try {
@@ -66,7 +68,7 @@ public class ComentariosData {
         }
     }
 
-        public void activarComentario(int id) {
+    public void activarComentario(int id) {
 
         try {
             String sql = "UPDATE comentarios SET estado = 1 WHERE idComentario = ? ";
@@ -80,6 +82,7 @@ public class ComentariosData {
             JOptionPane.showMessageDialog(null, " No se pudo activar el comentario" + e.getMessage());
         }
     }
+
     public Comentarios modificarComentario(int id, Comentarios c) {
 
         String sql = "UPDATE comentarios SET comentario = ?, fechaAvance = ?,estado = ? WHERE  idComentario = ? AND estado = 1";
@@ -102,28 +105,24 @@ public class ComentariosData {
         }
         return c;
     }
-        public List<Comentarios> listarComentariosPorIdTarea(int id) {
+
+    public List<Comentarios> listarComentariosPorIdTarea(int id) {
         List<Comentarios> comentariosLista = new ArrayList<>();
         try {
             String sql = "SELECT idComentario, comentario,fechaAvance,estado\n"
                     + "FROM comentarios\n"
-                    + "WHERE idTarea = ?";
+                    + "WHERE idTarea = ? AND estado = 1";
 
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
-            ArrayList<Comentarios> listaRecibida = new ArrayList<Comentarios>();
             while (rs.next()) {
                 Comentarios a = new Comentarios();
                 a.setIdComentario(rs.getInt("idComentario"));
                 a.setComentario(rs.getString("comentario"));
                 a.setFechaAvance(rs.getDate("fechaAvance").toLocalDate());
                 a.setEstado(rs.getBoolean("estado"));
-                listaRecibida.add(a);
-               
-            }
-            for (Comentarios comentarios : listaRecibida) {
-                System.out.println(comentarios);
+                comentariosLista.add(a);
             }
             ps.close();
         } catch (SQLException ex) {
@@ -131,4 +130,5 @@ public class ComentariosData {
         }
         return comentariosLista;
     }
+
 }

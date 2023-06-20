@@ -254,7 +254,7 @@ public class ViewAsignarTareaMiembroEq extends javax.swing.JFrame {
 
                 EquipoMiembros eqMiemb = equiMiemData.buscarEquipoMiembro(idEquipo, miemSelec.getIdMiembro());
 
-                boolean estado = true;
+                int estado = 1;
 
                 Tarea t = new Tarea(nombreT, fechaCre, fechaCierre, estado, eqMiemb);
 

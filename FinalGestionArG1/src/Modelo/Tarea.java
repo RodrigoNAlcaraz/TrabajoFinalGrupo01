@@ -8,13 +8,13 @@ public class Tarea {
     private String nombre;
     private LocalDate fechaCreacion;
     private LocalDate fechaCierre;
-    private boolean estado;
+    private int estado;
     private EquipoMiembros equipomiembros;
 
     public Tarea() {
     }
 
-    public Tarea(int idTarea, String nombre, LocalDate fechaCreacion, LocalDate fechaCierre, boolean estado, EquipoMiembros equipomiembros) {
+    public Tarea(int idTarea, String nombre, LocalDate fechaCreacion, LocalDate fechaCierre, int estado, EquipoMiembros equipomiembros) {
         this.idTarea = idTarea;
         this.nombre = nombre;
         this.fechaCreacion = fechaCreacion;
@@ -23,7 +23,7 @@ public class Tarea {
         this.equipomiembros = equipomiembros;
     }
 
-    public Tarea(String nombre, LocalDate fechaCreacion, LocalDate fechaCierre, boolean estado, EquipoMiembros equipomiembros) {
+    public Tarea(String nombre, LocalDate fechaCreacion, LocalDate fechaCierre, int estado, EquipoMiembros equipomiembros) {
         this.nombre = nombre;
         this.fechaCreacion = fechaCreacion;
         this.fechaCierre = fechaCierre;
@@ -63,11 +63,11 @@ public class Tarea {
         this.fechaCierre = fechaCierre;
     }
 
-    public boolean isEstado() {
+    public int getEstado() {
         return estado;
     }
 
-    public void setEstado(boolean estado) {
+    public void setEstado(int estado) {
         this.estado = estado;
     }
 
