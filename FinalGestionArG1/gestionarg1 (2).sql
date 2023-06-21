@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 21-06-2023 a las 00:12:51
+-- Tiempo de generación: 21-06-2023 a las 18:02:55
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -77,7 +77,8 @@ INSERT INTO `equipo` (`idProyecto`, `idEquipo`, `nombre`, `fechaCreacion`, `esta
 (1, 1, 'grupo 1', '2023-05-05', 1),
 (2, 2, 'grupo 15', '2023-05-25', 1),
 (3, 3, 'grupo test', '2023-06-12', 1),
-(5, 10, 'TestdesdemainM', '2017-01-01', 1);
+(5, 10, 'TestdesdemainM', '2017-01-01', 1),
+(4, 12, 'jkl', '2023-06-14', 1);
 
 -- --------------------------------------------------------
 
@@ -132,9 +133,7 @@ INSERT INTO `miembro` (`idMiembro`, `dni`, `apellido`, `nombre`, `estado`) VALUE
 (6, 987654321, 'celestino', 'urgencio', 1),
 (7, 123, 'testapellido', 'testNombre', 1),
 (8, 153251, 'alverti', 'juan carlos', 1),
-(13, 22222, 'faustino', 'sarmiento', 1),
-(14, 339900, 'test20', 'aa', 1),
-(18, 123, 'abc', 'dfg', 1);
+(13, 22222, 'faustino', 'sarmiento', 1);
 
 -- --------------------------------------------------------
 
@@ -156,7 +155,7 @@ CREATE TABLE `proyecto` (
 
 INSERT INTO `proyecto` (`idProyecto`, `nombre`, `descripcion`, `fechaInicio`, `estado`) VALUES
 (1, 'carrera mortal', 'cashera mortah', '2023-05-30', 1),
-(2, 'herencia', 'señora de los gatos', '2023-05-31', 1),
+(2, 'herenciaa', 'señora de los cat', '2023-05-31', 1),
 (3, 'Materia2', 'materia dificil2', '2023-06-12', 1),
 (4, 'Materia', 'materia dificil', '2023-06-12', 1),
 (5, 'Materia rara2.0', 'dificilisima', '2023-06-12', 1);
@@ -218,7 +217,7 @@ ALTER TABLE `equipomiembros`
 --
 ALTER TABLE `miembro`
   ADD PRIMARY KEY (`idMiembro`),
-  ADD UNIQUE KEY `dni` (`dni`,`apellido`,`nombre`);
+  ADD UNIQUE KEY `dni` (`dni`);
 
 --
 -- Indices de la tabla `proyecto`
@@ -247,7 +246,7 @@ ALTER TABLE `comentarios`
 -- AUTO_INCREMENT de la tabla `equipo`
 --
 ALTER TABLE `equipo`
-  MODIFY `idEquipo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `idEquipo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de la tabla `equipomiembros`
@@ -259,7 +258,7 @@ ALTER TABLE `equipomiembros`
 -- AUTO_INCREMENT de la tabla `miembro`
 --
 ALTER TABLE `miembro`
-  MODIFY `idMiembro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `idMiembro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT de la tabla `proyecto`
