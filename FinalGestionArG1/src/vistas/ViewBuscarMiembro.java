@@ -274,7 +274,7 @@ public class ViewBuscarMiembro extends javax.swing.JFrame {
             txtNombre.setText(miem.getNombre());
             txtDNI.setText(dniMiembro);
             radBtnEstado.setSelected(miem.isEstado());
-
+            txtIdMiembro.setEnabled(false);
             estadoBtn();
         } else {
             JOptionPane.showMessageDialog(this, "No se encontró un miembro con ese DNI");
@@ -347,6 +347,7 @@ public class ViewBuscarMiembro extends javax.swing.JFrame {
         radBtnEstado.setEnabled(false);
         radBtnEstado.setSelected(false);
         radBtnEliminar.setSelected(false);
+        
     }
 
     public void estadoBtn() {
