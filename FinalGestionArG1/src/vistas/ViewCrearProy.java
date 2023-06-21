@@ -18,7 +18,6 @@ public class ViewCrearProy extends javax.swing.JFrame {
         initComponents();
     }
 
-
     public ViewCrearProy(ProyectoData pd, EquipoData equiData) {
         initComponents();
         this.pd = pd;
@@ -157,7 +156,7 @@ public class ViewCrearProy extends javax.swing.JFrame {
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         // TODO add your handling code here:
-        ViewPpalProyec ppalProyec = new ViewPpalProyec(pd,equiData);
+        ViewPpalProyec ppalProyec = new ViewPpalProyec(pd, equiData);
         ppalProyec.setVisible(true);
         ppalProyec.setLocationRelativeTo(null);
         this.dispose();
@@ -172,6 +171,12 @@ public class ViewCrearProy extends javax.swing.JFrame {
 
             if (nombreProy.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "El campo Nombre no puede estar vacío", "Error", JOptionPane.ERROR_MESSAGE);
+                txtNombreProy.requestFocus();
+                return;
+            }
+
+            if (!nombreProy.matches("^[a-zA-Z0-9\\s]{3,}$")) {
+                JOptionPane.showMessageDialog(this, "El nombre del proyecto debe contener al menos 3 letras y no puede contener caracteres especiales.");
                 txtNombreProy.requestFocus();
                 return;
             }

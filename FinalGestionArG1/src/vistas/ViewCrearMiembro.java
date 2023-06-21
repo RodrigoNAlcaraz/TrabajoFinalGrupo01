@@ -175,13 +175,43 @@ public class ViewCrearMiembro extends javax.swing.JFrame {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here:
-        int opcion = JOptionPane.showConfirmDialog(this, "¿Estás seguro de guardar?", "Confirmación", JOptionPane.YES_NO_OPTION);
+    int opcion = JOptionPane.showConfirmDialog(this, "¿Estás seguro de guardar?", "Confirmación", JOptionPane.YES_NO_OPTION);
         if (opcion == JOptionPane.YES_OPTION) {
-
             try {
                 String apellido = txtApellido.getText();
                 int dni = Integer.parseInt(txtDNI.getText());
                 String nombre = txtNombre.getText();
+                // Validación del DNI
+               if (!txtDNI.getText().matches("^[0-9]+$")) {
+                JOptionPane.showMessageDialog(this, "El DNI debe contener solo números.");
+                return;
+                 }
+
+                if (txtDNI.getText().length() < 6) {
+                JOptionPane.showMessageDialog(this, "El DNI debe tener al menos 6 caracteres.");
+                return;
+                 }
+                if (dni <= 0) {
+                  JOptionPane.showMessageDialog(this, "El DNI debe ser un número positivo.");
+                  return;
+                 }
+                // Esto valida que el nombre y apellido no estén vacíos
+            if (nombre.isEmpty() || apellido.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Por favor, ingresa un nombre y un apellido.");
+                return;
+            }
+
+            // Esto valida que el nombre y apellido sean razonables
+            if (nombre.length() < 2 || apellido.length() < 2) {
+                JOptionPane.showMessageDialog(this, "El nombre y el apellido deben tener al menos 2 caracteres.");
+                return;
+            }
+
+            // Esto valida que el nombre y apellido no contengan números con una expresion regular
+            if (nombre.matches(".*\\d.*") || apellido.matches(".*\\d.*")) {
+                JOptionPane.showMessageDialog(this, "El nombre y el apellido no deben contener números.");
+                return;
+            }
 
                 Miembro miembro = new Miembro(dni, apellido, nombre, true);
                 miemData.guardarmiembro(miembro);
@@ -189,8 +219,10 @@ public class ViewCrearMiembro extends javax.swing.JFrame {
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "El DNI es incorrecto.");
                 txtDNI.requestFocus();
-            }
+            }  
 
+
+                
 
     }//GEN-LAST:event_btnGuardarActionPerformed
     }

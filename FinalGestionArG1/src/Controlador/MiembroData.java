@@ -24,27 +24,32 @@ public class MiembroData {
     }
 
     public void guardarmiembro(Miembro Miembro) {
-        String sql = "INSERT INTO miembro (dni, apellido, nombre, estado) VALUES (?, ?, ?, ?)";
-        try {
-            PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, Miembro.getDni());
-            ps.setString(2, Miembro.getApellido());
-            ps.setString(3, Miembro.getNombre());
-            ps.setInt(4, Miembro.isEstado() ? 1 : 0);
-            ps.executeUpdate();
-            ResultSet rs = ps.getGeneratedKeys();
-            if (rs.next()) {
-                Miembro.setIdMiembro(rs.getInt(1));
-
-                JOptionPane.showMessageDialog(null, "Miembro añadido con exito.");
-            } else {
-                JOptionPane.showMessageDialog(null, "El miembro no fue añadido.");
-            }
-            ps.close();
-        } catch (SQLException ex) {
+    String sql = "INSERT INTO miembro (dni, apellido, nombre, estado) VALUES (?, ?, ?, ?)";
+    try {
+        PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        ps.setInt(1, Miembro.getDni());
+        ps.setString(2, Miembro.getApellido());
+        ps.setString(3, Miembro.getNombre());
+        ps.setInt(4, Miembro.isEstado() ? 1 : 0);
+        ps.executeUpdate();
+        ResultSet rs = ps.getGeneratedKeys();
+        if (rs.next()) {
+            Miembro.setIdMiembro(rs.getInt(1));
+            JOptionPane.showMessageDialog(null, "Miembro añadido con exito.");
+        } else {
+            JOptionPane.showMessageDialog(null, "El miembro no fue añadido.");
+        }
+        ps.close();
+    } catch (SQLException ex) {
+        if (ex.getSQLState().equals("23000")) {
+            JOptionPane.showMessageDialog(null, "Intenta añadir un miembro duplicado");
+        } else {
             JOptionPane.showMessageDialog(null, "No se pudo añadir el miembro." + ex.getMessage());
         }
     }
+}
+
+
 
     public Miembro buscarMiembro(int id) {
         Miembro e = new Miembro();

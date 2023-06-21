@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 10-06-2023 a las 22:43:59
+-- Tiempo de generación: 21-06-2023 a las 00:12:51
 -- Versión del servidor: 10.4.28-MariaDB
--- Versión de PHP: 8.0.28
+-- Versión de PHP: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -40,7 +40,20 @@ CREATE TABLE `comentarios` (
 --
 
 INSERT INTO `comentarios` (`idComentario`, `comentario`, `fechaAvance`, `idTarea`, `estado`) VALUES
-(5, 'emma me paso la sala', '2023-06-10', 4, 1);
+(7, 'comentario 1', '2023-06-14', 3, 0),
+(8, 'comentario 2', '2023-06-14', 3, 1),
+(9, 'dia del padre', '2023-06-16', 3, 1),
+(10, 'asdasdasd1', '2023-06-19', 3, 0),
+(11, 'commit 1', '2023-06-20', 5, 0),
+(12, 'probando123', '2023-06-20', 5, 0),
+(13, 'probando1234', '2023-06-20', 5, 1),
+(14, 'viendo q pasa', '2023-06-20', 3, 1),
+(15, 'probando 2', '2023-06-20', 7, 1),
+(16, 'asdasd 3', '2023-06-20', 8, 1),
+(17, 'zfdsdfs', '2023-06-19', 3, 0),
+(18, 'asdas', '2023-06-12', 8, 1),
+(19, 'termine el descanso', '2023-06-20', 3, 1),
+(20, 'terminada 2.0', '2023-06-20', 3, 1);
 
 -- --------------------------------------------------------
 
@@ -61,11 +74,10 @@ CREATE TABLE `equipo` (
 --
 
 INSERT INTO `equipo` (`idProyecto`, `idEquipo`, `nombre`, `fechaCreacion`, `estado`) VALUES
-(1, 1, 'grupo 1', '2023-05-30', 1),
+(1, 1, 'grupo 1', '2023-05-05', 1),
 (2, 2, 'grupo 15', '2023-05-25', 1),
 (3, 3, 'grupo test', '2023-06-12', 1),
-(5, 10, 'TestdesdemainM', '2017-01-01', 1),
-(7, 20, 'EquipoZ', '2016-02-20', 1);
+(5, 10, 'TestdesdemainM', '2017-01-01', 1);
 
 -- --------------------------------------------------------
 
@@ -87,8 +99,11 @@ CREATE TABLE `equipomiembros` (
 
 INSERT INTO `equipomiembros` (`idMiembroEq`, `fechaIncorporacion`, `idEquipo`, `idMiembro`, `Estado`) VALUES
 (23, '2023-06-09', 1, 1, 1),
-(37, '2030-01-01', 10, 14, 1),
-(39, '2017-01-01', 20, 16, 1);
+(32, '2023-06-13', 1, 2, 1),
+(37, '2023-06-17', 1, 4, 1),
+(38, '2023-06-17', 2, 6, 1),
+(39, '2023-06-17', 1, 3, 1),
+(40, '2023-06-17', 2, 13, 1);
 
 -- --------------------------------------------------------
 
@@ -111,15 +126,15 @@ CREATE TABLE `miembro` (
 INSERT INTO `miembro` (`idMiembro`, `dni`, `apellido`, `nombre`, `estado`) VALUES
 (1, 41298481, 'aguilar', 'facundo', 1),
 (2, 44600506, 'angel', 'emmanuel', 1),
-(3, 39091538, 'alcaraz', 'rodrigo', 1),
+(3, 39091538, 'alcaraz', 'rodrigo Nicolas', 1),
 (4, 33969341, 'aguirre', 'adrian', 1),
 (5, 12345678, 'canenas', 'helto', 1),
 (6, 987654321, 'celestino', 'urgencio', 1),
 (7, 123, 'testapellido', 'testNombre', 1),
 (8, 153251, 'alverti', 'juan carlos', 1),
 (13, 22222, 'faustino', 'sarmiento', 1),
-(14, 32112, 'alquilar', 'piso', 1),
-(16, 4136, 'roman', 'ruperto', 1);
+(14, 339900, 'test20', 'aa', 1),
+(18, 123, 'abc', 'dfg', 1);
 
 -- --------------------------------------------------------
 
@@ -144,8 +159,7 @@ INSERT INTO `proyecto` (`idProyecto`, `nombre`, `descripcion`, `fechaInicio`, `e
 (2, 'herencia', 'señora de los gatos', '2023-05-31', 1),
 (3, 'Materia2', 'materia dificil2', '2023-06-12', 1),
 (4, 'Materia', 'materia dificil', '2023-06-12', 1),
-(5, 'Materia rara', 'dificilisima', '2023-06-12', 1),
-(7, 'proshecto zeta', 'zeta', '2023-06-12', 1);
+(5, 'Materia rara2.0', 'dificilisima', '2023-06-12', 1);
 
 -- --------------------------------------------------------
 
@@ -167,7 +181,12 @@ CREATE TABLE `tarea` (
 --
 
 INSERT INTO `tarea` (`idTarea`, `nombre`, `fechaCreacion`, `fechaCierre`, `estado`, `idMiembroEq`) VALUES
-(4, 'limpiar', '2020-02-02', '2023-06-11', 1, 39);
+(3, 'Descansar el dia del padre', '2023-06-18', '2023-06-19', 3, 39),
+(5, 'nose 1', '2023-06-20', '2023-06-21', 1, 39),
+(6, 'ver 22', '2023-06-20', '2023-06-21', 1, 23),
+(7, 'probando estados 2', '2023-06-19', '2023-06-20', 2, 39),
+(8, 'probando estados 3', '2023-06-19', '2023-06-20', 0, 39),
+(9, 'probando estados 1', '2023-06-19', '2023-06-20', 1, 39);
 
 --
 -- Índices para tablas volcadas
@@ -177,8 +196,7 @@ INSERT INTO `tarea` (`idTarea`, `nombre`, `fechaCreacion`, `fechaCierre`, `estad
 -- Indices de la tabla `comentarios`
 --
 ALTER TABLE `comentarios`
-  ADD PRIMARY KEY (`idComentario`),
-  ADD UNIQUE KEY `idTarea` (`idTarea`);
+  ADD PRIMARY KEY (`idComentario`);
 
 --
 -- Indices de la tabla `equipo`
@@ -199,7 +217,8 @@ ALTER TABLE `equipomiembros`
 -- Indices de la tabla `miembro`
 --
 ALTER TABLE `miembro`
-  ADD PRIMARY KEY (`idMiembro`);
+  ADD PRIMARY KEY (`idMiembro`),
+  ADD UNIQUE KEY `dni` (`dni`,`apellido`,`nombre`);
 
 --
 -- Indices de la tabla `proyecto`
@@ -212,7 +231,7 @@ ALTER TABLE `proyecto`
 --
 ALTER TABLE `tarea`
   ADD PRIMARY KEY (`idTarea`),
-  ADD UNIQUE KEY `idMiembroEq` (`idMiembroEq`);
+  ADD UNIQUE KEY `nombre` (`nombre`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -222,37 +241,37 @@ ALTER TABLE `tarea`
 -- AUTO_INCREMENT de la tabla `comentarios`
 --
 ALTER TABLE `comentarios`
-  MODIFY `idComentario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `idComentario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT de la tabla `equipo`
 --
 ALTER TABLE `equipo`
-  MODIFY `idEquipo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `idEquipo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `equipomiembros`
 --
 ALTER TABLE `equipomiembros`
-  MODIFY `idMiembroEq` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `idMiembroEq` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT de la tabla `miembro`
 --
 ALTER TABLE `miembro`
-  MODIFY `idMiembro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `idMiembro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT de la tabla `proyecto`
 --
 ALTER TABLE `proyecto`
-  MODIFY `idProyecto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `idProyecto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `tarea`
 --
 ALTER TABLE `tarea`
-  MODIFY `idTarea` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `idTarea` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Restricciones para tablas volcadas
@@ -275,7 +294,7 @@ ALTER TABLE `equipo`
 --
 ALTER TABLE `equipomiembros`
   ADD CONSTRAINT `IdEquipo` FOREIGN KEY (`idEquipo`) REFERENCES `equipo` (`idEquipo`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `idmiembrorelacion` FOREIGN KEY (`idMiembro`) REFERENCES `miembro` (`idMiembro`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `equipomiembros_ibfk_2` FOREIGN KEY (`idMiembro`) REFERENCES `miembro` (`idMiembro`) ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `tarea`

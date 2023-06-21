@@ -227,6 +227,12 @@ public class ViewAsignarTareaMiembroEq extends javax.swing.JFrame {
                     return;
                 }
 
+                if (!txtNombreTarea.getText().matches("^[a-zA-Z0-9\\s]{3,}$")) {
+                    JOptionPane.showMessageDialog(this, "El nombre del proyecto debe contener al menos 3 letras y no puede contener caracteres especiales.");
+                    txtNombreTarea.requestFocus();
+                    return;
+                }
+
                 Date sfecha = dateFechaCreacion.getDate();
                 if (sfecha == null) {
                     JOptionPane.showMessageDialog(this, "La fecha de creación no puede estar vacía.");

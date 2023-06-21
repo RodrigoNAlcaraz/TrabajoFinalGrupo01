@@ -185,12 +185,16 @@ public class ViewCrearEquipo extends javax.swing.JFrame {
 
     private void btnCrearEquipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearEquipoActionPerformed
         // TODO add your handling code here:
-
         int opcion = JOptionPane.showConfirmDialog(this, "¿Estás seguro de guardar?", "Confirmación", JOptionPane.YES_NO_OPTION);
         if (opcion == JOptionPane.YES_OPTION) {
 
             try {
                 String nombreE = txtNombreEquipo.getText();
+                // Validación del nombre del equipo
+                if (!nombreE.matches("^[a-zA-Z]{3,}$")) {
+                    JOptionPane.showMessageDialog(this, "El nombre del equipo debe contener al menos 3 letras y no puede contener caracteres especiales, números o espacios.");
+                    return;
+                }
                 Date sfecha = dateFechaCreacion.getDate();
                 LocalDate fechaCre = sfecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                 boolean estado = true;
@@ -199,7 +203,7 @@ public class ViewCrearEquipo extends javax.swing.JFrame {
 
                 Equipo eq = new Equipo(proyectoSeleccionado, nombreE, fechaCre, estado);
                 equiData.guardarEquipo(eq);
-                
+
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Hay errores en los campos.");
                 txtNombreEquipo.requestFocus();
@@ -221,12 +225,12 @@ public class ViewCrearEquipo extends javax.swing.JFrame {
     private void cargaMateriasCBox() {
         List<Proyecto> listaPro = proyecData.listarProyectos();
         for (Proyecto proyecto : listaPro) {
-            
+
             cBoxAsignarProyecto.addItem(proyecto);
         }
     }
-    
-    public void limpiar(){
+
+    public void limpiar() {
         txtNombreEquipo.setText("");
         dateFechaCreacion.setDate(null);
     }
